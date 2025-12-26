@@ -24,7 +24,6 @@ export class PdfPlayer {
         this.onDialogClosed = this.onDialogClosed.bind(this);
         this.onWindowKeyDown = this.onWindowKeyDown.bind(this);
         this.onTouchStart = this.onTouchStart.bind(this);
-        this.onMouseClicked = this.onMouseClicked.bind(this);
     }
 
     play(options) {
@@ -122,15 +121,6 @@ export class PdfPlayer {
     }
 
     onTouchStart(e) {
-        if (!this.loaded || !e.touches || e.touches.length === 0) return;
-        if (e.touches[0].clientX < dom.getWindowSize().innerWidth / 2) {
-            this.previous();
-        } else {
-            this.next();
-        }
-    }
-
-    onMouseClicked(e) {
         if (!this.loaded || e.button != 0) return;
         if (e.pageX < dom.getWindowSize().innerWidth / 2) {
             this.previous();
@@ -154,8 +144,7 @@ export class PdfPlayer {
         this.bindMediaElementEvents();
 
         document.addEventListener('keydown', this.onWindowKeyDown);
-        document.addEventListener('touchstart', this.onTouchStart);
-        document.addEventListener('mouseup', this.onMouseClicked);
+        document.addEventListener('pointerup', this.onTouchStart);
     }
 
     unbindMediaElementEvents() {
@@ -171,8 +160,7 @@ export class PdfPlayer {
         }
 
         document.removeEventListener('keydown', this.onWindowKeyDown);
-        document.removeEventListener('touchstart', this.onTouchStart);
-        document.removeEventListener('mouseup', this.onMouseClicked);
+        document.removeEventListener('pointerup', this.onTouchStart);
     }
 
     createMediaElement() {
